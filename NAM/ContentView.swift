@@ -8,14 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+    //@StateObject var runtimeRepository = RuntimeRepository.shared
+    @State var isActive: Bool = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+        ZStack {
+            if self.isActive {
+                    NavigationView{
+                        MainNavigation()
+                    }.accentColor(Color("purple")).onAppear{
+                        //runtimeRepository.someText = "Hello"
+                    }
+            } else {
+                SplashView()
+            }
+        }.frame(
+            minWidth: 0,
+            maxWidth: .infinity,
+            minHeight: 0,
+            maxHeight: .infinity,
+            alignment: .top
+        ).background(Color(.white))
+            .preferredColorScheme(.light)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    withAnimation {
+                        self.isActive = true
+                    }
+                }
+            }
     }
 }
 
